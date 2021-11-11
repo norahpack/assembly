@@ -1,0 +1,55 @@
+# hw6 pr6 "recursive fibonacci"
+#
+# Name(s): Norah Pack
+#
+# Hmmm...
+#
+# This is a placeholder - you'll replace this code...
+#   gold:  recursively computes the nth term of the fibonacci sequence
+#
+
+# function call
+00 read r1        #gets the user input (n): python line 1
+01 setn r15 60    #initialize the stack pointer
+02 calln r14 11   #calls the fibonacci function (at line 11). python line 2
+03 nop            #space for jumping back to when r14 is 3
+04 nop            
+05 nop
+06 nop
+07 nop
+08 nop
+09 write r13      #prints result to the screen. python line 4
+10 halt           #stops. python line 5
+
+#base case
+11 setn r2 -2     #sets r2 to -2
+12 add r3 r1 r2   #sets r3 to r1-2
+13 jgtzn r3 17    #go to recursive call if r3>0 (if r1>2). python line 6 & 9 
+14 setn r13 1     #sets r13 to 1. python line 7
+15 nop
+16 jumpr r14      #returns the result, r13, to the line # in r14. python line 7
+
+#recursive
+17 pushr r1 r15   #pushes r1 to the stack at location r15
+18 pushr r14 r15  #pushes r14 to the stack at location r15
+19 addn r1 -1     #subtracts one from r1
+20 nop
+21 calln r14 11   #calls the fibonacci of (r1-1). python line 9
+22 nop            #space for jumping back to when r14 is 22
+23 nop              
+24 popr r14 r15   #recover r14 from the stack and set r14 to this value
+25 popr r1 r15    #recover r1 from the stack and set r1 to this value
+26 copy r4 r13    #copies r13 to a new variable r4 since r13 is special. python line 10
+27 pushr r4 r15   #pushes r4 to the stack at location r15
+28 pushr r1 r15   #pushes r1 to the stack at location r15
+29 pushr r14 r15  #pushes r14 to the stack at location r15
+30 addn r1 -2     #subtracts two from r1
+31 nop
+32 calln r14 11   #calls the fibonacci of (r1-2). python line 11. 
+33 nop            #space for jumping back to when r14 is 33
+34 nop
+35 popr r14 r15   #recover r14 from the stack and set r14 to this value 
+36 popr r1 r15    #recover r1 from the stack and set r1 to this value 
+37 popr r4 r15    #recover r4 from the stack and set r4 to this value
+38 add r13 r13 r4 #adds fibonacci (r1-1) and (r1-2). python line 12
+39 jumpr r14       #jumps to line r14. python line 13

@@ -1,0 +1,43 @@
+# hw6 pr6 "recursive fibonacci"
+#
+# Name(s): Norah Pack
+#
+# Hmmm...
+#
+# ACKERMANN CS 42
+#
+
+# function call
+00 read r1        #gets the user input m
+01 read r2        #gets the user input n
+02 setn r15 60    #initialize the stack pointer
+03 calln r14 06   #calls the ACKERMANN function (at line 11)
+04 write r13      #print r13
+05 halt           #stops
+06 setn r3 1      #sets r3 to 1
+07 jgtzn r1 10    #jump to line 16 if r1(m)>0
+08 add r13 r3 r2  #r13=r2(n)+1
+09 jumpr r14      #returns the result, r13, to the line # kept in r14. This is the ONLY WAY WE ACTUALLY GET A NUMBER/RESULT!!!
+10 pushr r1 r15   #pushes r1 to the stack at location r15
+11 pushr r2 r15   #pushes r2 to the stack location r15
+12 pushr r14 r15  #pushes r14 to the stack at location r15
+13 addn r1 -1     #subtracts 1 from r1(m)
+14 jgtzn r2 21    #jump to line 36 if r2 not equal 0
+15 setn r2 1      #sets r2 to 1
+16 calln r14 06   #calls recursive function using the case A(m-1, 1). sets r14 to 23.
+17 popr r14 r15   #sets r14 to the value in the top position in the stack (the most recently entered)
+18 popr r2 r15    #sets r2 to the value in the top position in the stack (the most recently entered that wasn't removed, etc.)
+19 popr r1 r15    #sets r1 to the value in the top position in the stack (the most recently entered that wasn't removed, etc.) } now we are back up three, three fewer in the stack 
+20 jumpr r14      #jumps to position r14. 
+21 addn r1 1 #r1+=1
+22 addn r2 -1 #r2-=1, now we have m and n-1 to do inner A(m, n-1)
+23 calln r14 06   #calls the Ackermann function again. (recursion within recursion --> m, n-1). sets r14=46
+24 addn r1 -1    
+25 copy r2 r13    #copies the value of the variable r13 into r2        
+26 calln r14 06   #calls the Ackermann function again just (m, n) this time.
+27 popr r14 r15   #sets r14 to the value in the top position in the stack (the most recently entered)
+28 popr r2 r15    #sets r2 to the value in the top position in the stack (the most recently entered that wasn't removed, etc.)
+29 popr r1 r15    #sets r1 to the value in the top position in the stack (the most recently entered that wasn't removed, etc.) } now we are back up three, three fewer in the stack 
+30 jumpr r14      #returns to A(m,n) the value of A(m-1, A(m, n-1))    
+
+

@@ -1,0 +1,98 @@
+# hw6 pr4 "recursive power"
+#
+# Name(s): Norah Pack
+#
+# Hmmm...
+#
+# This is a placeholder - you'll replace this code...
+# HANOI CS BLACK / 42
+#
+
+# function call
+
+00 read r1          # get Disks from user// start of main()
+01 read r2          # get FromPeg from user
+02 read r3          # get ToPeg from user
+03 setn r15 100     # r15 = 100
+04 calln r14 6      # r14 = 5, jump to line 6
+05 halt             # stop
+
+# base case. goal: if disks equals 1, print fromPeg, print toPeg
+
+06 addn r1 -1       # subtracts 1 from disks. if disks was 1 before subtracting 1, we will execute the base case.
+07 jnezn r1 11      # if disks was not 1 before subtracting 1, then go on to the "else" case in line 11 (find the other peg)
+08 write r2         # since disks before subtraction is 1, print fromPeg
+09 write r3         # since disks before subtraction is 1, print toPeg
+10 jumpr r14        # return to the line referred to in r14 (after function call. we executed the function, and this is the result.)
+
+# else case. find the other peg before we call our hanoi function. goal: r4 = "otherPeg"
+
+11 setn r4 6        # sets otherPeg to 6
+12 sub r4 r4 r2     # subtracts fromPeg from otherPeg
+13 sub r4 r4 r3     # subtracts toPeg from otherPeg (otherPeg is now the unused value 1,2,3)
+
+# hanoi(Disks-1, FromPeg, OtherPeg)
+# Disks-1 is in r1 great :)
+# From peg is in r2 great
+# we need to set toPeg (r3) to the value in otherPeg (r4).
+# what we need to SAVE is the previous value of r3 before we change it. 
+
+14 pushr r3 r15     # saves the old value of r3 to the stack. this will be the FINAL value we can pop off the stack
+15 copy r3 r4       # sets toPeg to the value in otherPeg.
+16 pushr r1 r15     # now we need to save the other 4 values to the stack so we can recall what they were before this after the function is called. 
+17 pushr r2 r15     # same
+18 pushr r14 r15    # same
+19 pushr r4 r15     # same
+20 calln r14 6      # calls hanoi(disks-1, frompeg, otherpeg). will return to line 21.
+21 nop              # place to return if r14 is 21. 
+                    # what we have now: value of hanoi(disks-1, frompeg, otherpeg). what to do next: pop the 5 values BEFORE the function call and pass them onto the next hanoi case (out of the three). we successfully printed all that we needed to for this hanoi case. 
+22 popr r4 r15      # pop
+23 popr r14 r15     # same
+24 popr r2 r15      # same
+25 popr r1 r15      # same
+26 popr r3 r15      # same. our variables are back to what they were before the function call. 
+
+# does this need to be the same order of push and pop for every call???
+# what would make that necessary? if we pop outside of the original call. let's test this later.
+# to test: swap lines 16 and 17, 24 and 25. 18 and 19, 22 and 23. 
+# yes, this works.
+
+# hanoi(1, FromPeg, ToPeg)
+27 pushr r3 r15     # push r3 onto stack
+28 pushr r1 r15     # IMPORTANT! r1 before the setn.
+29 setn r1 1        # sets the number of disks to 1 before the function call.
+30 pushr r2 r15     # push r2 onto stack
+31 pushr r14 r15    # same
+32 pushr r4 r15     # same
+33 calln r14 6      # call hanoi(1, fromPeg, toPeg)
+34 nop              # place to return to when r14 is 34
+35 popr r4 r15      # pop
+36 popr r14 r15     # same
+37 popr r2 r15      # same
+38 popr r1 r15      # same
+39 popr r3 r15      # same. our variables are back to what they were before the function call. 
+
+# hanoi(Disks-1, OtherPeg, ToPeg)
+# make fromPeg (r2) the value in otherPeg(r4)
+
+40 pushr r3 r15     # push r3 onto stack
+41 pushr r1 r15     # push r1 onto stack 
+42 pushr r2 r15     # IMPORTANT! r2 before the copy.
+43 copy r2 r4       # sets fromPeg to the value in otherPeg
+44 pushr r14 r15    # push r14 onto stack
+45 pushr r4 r15     # same
+46 calln r14 6      # call hanoi(1, fromPeg, toPeg)
+47 nop              # place to return to when r14 is 34
+48 popr r4 r15      # pop
+49 popr r14 r15     # same
+50 popr r2 r15      # same
+51 popr r1 r15      # same
+52 popr r3 r15      # same. our variables are back to what they were before the function call. 
+53 jumpr r14        # return to whatever line directly after a function call that we just computed the hanoi value for. 
+
+
+
+
+
+
+
